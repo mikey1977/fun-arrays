@@ -7,10 +7,16 @@ var dataset = require('./dataset.json');
 */
 var hundredThousandairs = null;
 
+hundredThousandairs = dataset.bankBalances.filter(function(current, index, array) {
+  // console.log(current.amount);
+  return current.amount > 100000.00;
+})
+
+
 /*
   set a new key for each object in bankBalances named `rounded`
   the value of this key will be the `amount` rounded to the nearest dollar
-  example 
+  example
     {
       "amount": "134758.44",
       "state": "HI",
@@ -19,11 +25,16 @@ var hundredThousandairs = null;
   assign the resulting array to `roundedDollar`
 */
 var roundedDollar = null;
+roundedDollar = dataset.bankBalances.map(function(current, index, array) {
+  // current = Math.round(current.amount);
+  // console.log(current);
+  return {"amount": current.amount, "state": current.state, "rounded" : Math.round(current.amount)};
+})
 
 /*
   set a the `amount` value for each object in bankBalances
   to the value of `amount` rounded to the nearest 10 cents
-  example 
+  example
     {
       "amount": 134758.4,
       "state": "HI"
@@ -31,10 +42,19 @@ var roundedDollar = null;
   assign the resulting array to `roundedDime`
 */
 var roundedDime = null;
+roundedDime = dataset.bankBalances.map(function(current, index, array) {
+  // current = (Math.round(current.amount * 10))/10;
+  return {"amount": (Math.round(current.amount * 10))/10, "state": current.state};
+})
 
 // set sumOfBankBalances to the sum of all amounts in bankBalances
 var sumOfBankBalances = null;
+  sumOfBankBalances = dataset.bankBalances.reduce(function(previous, current, index, array) {
+  // console.log(previous.amount, current.amount)
+ return (Math.round((Number(previous) + Number(current.amount))*100))/100;
 
+}, 0);
+  // console.log("!!!!", sumOfBankBalances);
 /*
   set sumOfInterests to the sum of the 18.9% interest
   for all amounts in bankBalances
@@ -48,7 +68,9 @@ var sumOfBankBalances = null;
   the result should be rounded to the nearest cent
  */
 var sumOfInterests = null;
-
+// sumOfInterests = dataset.bankBalances.reduce(function(previous, current, index, array) {
+//   return {"amount": (Math.round((previous.amount + current.amount)*100))/100, "state": current.state}
+// }, 0)
 /*
   set sumOfHighInterests to the sum of the 18.9% interest
   for all amounts in bankBalances
@@ -77,14 +99,14 @@ var stateSums = null;
 
 /*
   set lowerSumStates to an array containing
-  only the two letter state abbreviation of each state 
+  only the two letter state abbreviation of each state
   where the sum of amounts in the state is
     less than 1,000,000
  */
 var lowerSumStates = null;
 
 /*
-  set higherStateSums to be the sum of 
+  set higherStateSums to be the sum of
     all amounts of every state
     where the sum of amounts in the state is
       greater than 1,000,000
